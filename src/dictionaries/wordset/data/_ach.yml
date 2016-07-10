@@ -1,0 +1,146 @@
+---
+pattern: '*ach'
+scored_words_count: 34
+total_words: 137
+score: 1074333
+score_per_word: 31598
+pickup: []
+scored_words:
+  abroach: 25540
+  accroach: 32935
+  ach: 12660
+  approach: 83201
+  attach: 9791
+  azedarach: 34115
+  bach: 3136
+  beach: 64337
+  bleach: 14617
+  brach: 46285
+  breach: 14618
+  broach: 6587
+  coach: 47746
+  cockroach: 22097
+  detach: 18275
+  each: 84228
+  encroach: 6178
+  impeach: 6826
+  leach: 13915
+  nach: 83274
+  outreach: 17911
+  overreach: 15872
+  peach: 678
+  pleach: 34328
+  poach: 21617
+  preach: 20661
+  rach: 28029
+  reach: 83445
+  reproach: 44793
+  roach: 17468
+  shadrach: 53634
+  spinach: 6185
+  stomach: 17970
+  teach: 81381
+not_scored_words:
+- ablach
+- aenach
+- afterbreach
+- Almach
+- amphibrach
+- aonach
+- areach
+- arracach
+- bacach
+- Bacharach
+- beallach
+- bepreach
+- bodach
+- brattach
+- cailleach
+- camshach
+- cannach
+- ceterach
+- clairschach
+- cleach
+- cocoach
+- colpindach
+- connach
+- corach
+- coronach
+- counterapproach
+- counterpreach
+- currach
+- davach
+- dibrach
+- discoach
+- dorlach
+- earreach
+- Eireannach
+- encoach
+- entach
+- erenach
+- eyereach
+- faithbreach
+- forereach
+- golach
+- grithbreach
+- gulsach
+- gunreach
+- headreach
+- heresimach
+- hieromonach
+- impleach
+- keach
+- kolach
+- Laibach
+- lekach
+- loach
+- logomach
+- mapach
+- Merodach
+- Mirach
+- mirach
+- misteach
+- orach
+- outpreach
+- overbleach
+- overpreach
+- overteach
+- Pesach
+- plumach
+- predetach
+- preteach
+- queach
+- reapproach
+- reattach
+- rebleach
+- rebroach
+- recoach
+- repreach
+- reteach
+- Roschach
+- ruach
+- sanshach
+- Sassenach
+- scronach
+- seabeach
+- Sidrach
+- slipcoach
+- spoach
+- stagecoach
+- stoach
+- tach
+- tanach
+- tellach
+- tetrabrach
+- tribrach
+- unattach
+- uncoach
+- underreach
+- unpreach
+- unteach
+- upreach
+- Vlach
+- Walach
+- Wallach
+- windbroach
+- Zach

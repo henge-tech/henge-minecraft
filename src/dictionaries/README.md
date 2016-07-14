@@ -15,3 +15,6 @@
    * google-10000-english
      * https://github.com/first20hours/google-10000-english
      * 20k.txt - 20,000 words
+   * wordfreq-en
+     * https://github.com/LuminosoInsight/wordfreq
+     * wordfreq-en.txt - 419,809 words

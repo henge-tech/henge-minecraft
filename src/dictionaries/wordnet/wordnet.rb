@@ -17,8 +17,10 @@ module WordNet
 end
 
 if ARGV[0].nil?
+  #
+  # Dump all entries into 3 files (wordnet.txt, wordnet-1.txt, wordnet-a.txt)
+  #
 
-  # dump all words
   lemmas = WordNet::Lemma.all
   words = []
   [:noun, :verb, :adj, :adv].each do |pos|
@@ -39,8 +41,17 @@ if ARGV[0].nil?
   # skip '.22-caliber', '.22 calibre', '.38-caliber', '.45-caliber', ...
   words = words.reject {|w| w =~ /^\.\d+/ }
 
-  puts words.join("\n")
+  open('wordnet.txt', 'w') do |out|
+    out.puts(words.join("\n"))
+  end
 
+  open('wordnet-1.txt', 'w') do |out|
+    out.puts(words.reject {|w| w =~ / / }.join("\n"))
+  end
+
+  open('wordnet-a.txt', 'w') do |out|
+    out.puts(words.reject {|w| w !~ / / }.join("\n"))
+  end
 else
 
   lemmas = WordNet::Lemma::find_all(ARGV[0])

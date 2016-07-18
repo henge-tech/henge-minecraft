@@ -1,63 +1,69 @@
 #! /usr/bin/env ruby
 
-# file, first score, middle pos, middle score, last score, last_line
-score_data = [
-  ['20050816.txt',   -1000.0, 10_000, 5000.0, 3000.0],
-  ['20060406.txt',   -1000.0, 10_000, 8000.0, 5000.0],
-  ['google-20k.txt', -1000.0, 10_000, 6000.0, 5000.0]
-]
+# google/rank-1w.txt          333,333
+# wordfreq/wordfreq-en.txt    419,809
+# wiktionary/20050816.txt      98,898
+# wiktionary/20060406.txt      36,662
+
+score_data =
+  [
+   ['google/rank-1w.txt',           10.0],
+   ['wordfreq/wordfreq-en.txt',      4.0],
+   ['wiktionary/20050816.txt',       2.0],
+   ['wiktionary/20060406.txt',       4.0],
+  ]
 
 words = {};
 
 score_data.each do |data|
-  filename = data[0]
-  words[filename] = {}
+  file   = data[0]
+  effect = data[1]
 
-  lines = File.readlines(data[0])
-  total = lines.length
-
-  lines.each do |line|
+  lines = File.readlines(file)
+  file_words = {}
+  lines.each.with_index do |line, i|
     line.chomp!
-    (linenum, word) = line.split(/\t/)
-    word = word.downcase
-    next if words[filename][word]
+    (rank, word) = line.split(/\t/)
+    word.downcase!
 
-    linenum = linenum.to_i
-    if linenum <= data[2]
-      step = (data[3] - data[1]) / data[2]
-      score = data[1] + step * (linenum - 1)
-    else
-      step = (data[3] - data[4]) / (total - data[2])
-      score = data[3] - step * (linenum - data[2] - 1)
+    # Ignore duplicated words
+    next if file_words[word]
+    file_words[word] = 1
+
+    unless words[word]
+      words[word] = {
+        word: word,
+        score: 0.0,
+        effects: 0.0,
+      }
     end
-
-    words[filename][word] = [linenum, score, word]
+    words[word][:score] += rank.to_i * effect
+    words[word][:effects]  += effect
+    # break if i > 1000
   end
 end
 
-all_words = {}
-
-idx = 0
-words.each do |filename, wordlist|
-  wordlist.each do |word, data|
-    unless all_words[word]
-      all_words[word] = [word, [99999, 99999, 99999], [0,0,0]]
-    end
-    all_words[word][1][idx] = data[0]
-    all_words[word][2][idx] = data[1]
+words = words.values
+  .reject {|w| w[:effects] <= 5 }
+  .each {|w| w[:score] = w[:score] / w[:effects] }
+  .sort do |a, b|
+  if a[:score] != b[:score]
+    a[:score] <=> b[:score]
+  elsif a[:effects] != b[:effects]
+    b[:effects] <=> a[:effects]
+  else
+    a[:word] <=> b[:word]
   end
-  idx += 1
 end
 
-all_words.each do |word, data|
-  data[3] = data[1].inject(:+)
-  data[4] = data[2].inject(:+)
+last_score = -1
+current_rank = nil
+words.each.with_index do |data, i|
+  # puts "#{i + 1}\t#{data[:word]}\t#{sprintf('%.2f', data[:score])}\t#{data[:effects]}"
+
+  if last_score != data[:score]
+    last_score = data[:score]
+    current_rank = i + 1
+  end
+  puts "#{current_rank}\t#{data[:word]}"
 end
-
-all_words.values.sort {|a,b| b[4] <=> a[4]}.each.with_index do |data, i|
-  puts "#{i + 1}\t#{sprintf('%.2f', data[4])}\t#{data[3]}\t#{data[0]}"
-end
-
-# print "#{ word }\t#{ data[0].join(',') }\t"
-# printf("%.2f,%.2f,%.2f\n", *data[1])
-

@@ -33,7 +33,10 @@ affix_chars = [
 # affix_patterns = affix_chars.map {|len| /^(.{#{len[0]}}).*(.{#{len[1]}})$/ }
 
 patterns = {}
-words = File.readlines(File.join(File.dirname(__FILE__), 'dicts/web2'))
+
+words_file = File.join(__dir__, '../dictionaries/scowl/en_US-large.txt')
+words = File.readlines(words_file)
+
 words.each.with_index do |word, i|
   word.chomp!
   word.downcase!
@@ -41,7 +44,9 @@ words.each.with_index do |word, i|
     next if word.length < c[0] + c[1]
     c1 = word[0...c[0]]
     c2 = word.reverse[0...c[1]].reverse
-    pat = "#{c1}*#{c2}"
+    next unless c1 =~ /\A[a-z]*\z/ and c2 =~ /\A[a-z]*\z/
+
+    pat = "#{c1}_#{c2}"
 
     if patterns[pat].nil?
       patterns[pat] = 0

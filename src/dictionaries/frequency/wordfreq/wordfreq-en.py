@@ -9,7 +9,12 @@ re_nonlatin = regex.compile('[^-_\p{Latin}\d\.\']')
 re_alphabet = regex.compile('[a-z]', regex.IGNORECASE)
 re_underscore = regex.compile('_')
 
+last_freq = -1
+position = 0
+current_line = 0
 for word in iter:
+    current_line += 1
+
     # skip non english words, emoji, etc.
     if re_nonlatin.search(word):
         continue
@@ -23,4 +28,8 @@ for word in iter:
         continue
 
     freq = word_frequency(word, 'en', 'large')
-    print("%s\t%f" % (word, freq * 1e6))
+
+    if freq != last_freq:
+        last_freq = freq
+        position = current_line
+    print("%d\t%s\t%f" % (position, word, freq * 1e6))

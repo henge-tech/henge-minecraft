@@ -1,4 +1,4 @@
-en_US Hunspell Dictionary
+en_US-large Hunspell Dictionary
 Version 2016.06.26
 Sun Jun 26 23:05:32 2016 -0400 [8b0808b]
 http://wordlist.sourceforge.net
@@ -318,5 +318,5 @@ from the Ispell distribution they are under the Ispell copyright:
   ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE.
 
-Build Date: Sun Jun 26 23:29:12 EDT 2016
-Wordlist Command: mk-list --accents=strip en_US 60
+Build Date: Sun Jun 26 23:29:19 EDT 2016
+Wordlist Command: mk-list -v1 --accents=both en_US 70

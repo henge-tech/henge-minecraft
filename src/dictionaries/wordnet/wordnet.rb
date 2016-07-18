@@ -22,12 +22,35 @@ if ARGV[0].nil?
   #
 
   lemmas = WordNet::Lemma.all
-  words = []
+  keys = []
   [:noun, :verb, :adj, :adv].each do |pos|
-    words += lemmas[pos].keys
+    keys += lemmas[pos].keys
+  end
+  keys = keys.sort.uniq
+
+  words = []
+  keys.each.with_index do |key, idx|
+    puts "#{idx} / #{keys.length} - #{words.length}\n"
+
+    lemmas = WordNet::Lemma::find_all(key)
+    lemmas.each do |lemma|
+      lemma.synsets.each do |syn|
+        words += syn.words
+      end
+    end
   end
 
-  words = words.sort.uniq.map {|w| w.gsub(/_/, ' ') }
+  words = words.sort do |a,b|
+    dca = a.downcase
+    dcb = b.downcase
+    dca == dcb ? a <=> b : dca <=> dcb
+  end
+  words = words.map {|w| w.gsub(/_/, ' ') }
+
+  # convert 'about(p)' to 'about'
+  words = words.map {|w| w.sub(/\(.+\)\z/, '')}
+
+  words = words.uniq
 
   # skip '100', '1950s', ...
   words = words.reject {|w| w =~ /^\d+(s)?$/ || w == '' }

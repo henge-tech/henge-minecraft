@@ -12,9 +12,9 @@
  * wordnet
    * https://wordnet.princeton.edu/
    * https://github.com/doches/rwordnet
-   * `wordnet.txt` - 146,926 entries
-   * `wordnet-1.txt` - 82,873 entries (words)
-   * `wordnet-a.txt` - 64,053 entries (phrases)
+   * `wordnet.txt` - 147,999 entries
+   * `wordnet-1.txt` - 84,169 entries (words)
+   * `wordnet-a.txt` - 63,830 entries (phrases)
  * hunspell
    * http://wordlist.aspell.net/dicts/
    * `words.txt` - 48,974 entries

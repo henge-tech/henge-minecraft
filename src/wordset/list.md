@@ -39,11 +39,25 @@
 |_bble.yml       |  20 *          |
 |_die.yml        |12              |
 |_dor.yml        |12              |
+|_eate.yml       |12              |
+|_eau.yml        |12              |
+|_eave.yml       |12              |
+|_ece.yml        |12              |
+|_ede.yml        |  16 *          |
+|_edge.yml       |12              |
+|_eek.yml        |12              |
+|_eel.yml        |12              |
+|_eep.yml        |12              |
 |_eet.yml        |12              |
 |_ef.yml         |12              |
 |_eg.yml         |12              |
+|_ege.yml        |  8 *           |
+|_ein.yml        |12              |
 |_ek.yml         |12              |
+|_ella.yml       |  13 *          |
+|_elt.yml        |12              |
 |_eral.yml       |  20 *          |
+|_erse.yml       |  16 *          |
 |_ital.yml       |12              |
 |_lot.yml        |12              |
 |_mage.yml       |  8 *           |
@@ -54,6 +68,7 @@
 |_ney.yml        |12              |
 |_ngle.yml       |  20 *          |
 |_oke.yml        |  16 *          |
+|_oma.yml        |12              |
 |_ord.yml        |  20 *          |
 |_rce.yml        |12              |
 |_rch.yml        |  16 *          |
@@ -82,6 +97,8 @@
 |cor_l.yml       |12              |
 |d_in.yml        |12              |
 |d_nate.yml      |12              |
+|dip_.yml        |12              |
+|dism_.yml       |  8 *           |
 |divi_.yml       |12              |
 |ex_nt.yml       |12              |
 |fe_y.yml        |  16 *          |

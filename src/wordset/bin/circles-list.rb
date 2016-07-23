@@ -1,7 +1,7 @@
 #! /usr/bin/env ruby
 
 
-dir = File.join(__dir__, '../processed/')
+dir = File.join(__dir__, '../circles/')
 
 files = nil
 map = nil
@@ -10,7 +10,7 @@ Dir.chdir(dir) do
   map = Hash[lines.split(/\n/).map {|line| line.strip}.map {|line| token = line.split(/\s/); [token[1], token[0]] }]
 end
 
-open(File.join(__dir__, '../list.md'), 'w') do |out|
+open(File.join(__dir__, '../circles.md'), 'w') do |out|
   out.puts "# Wordsets"
   out.puts
   out.puts "| File           | Entries        |"

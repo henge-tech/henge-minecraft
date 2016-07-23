@@ -5,7 +5,7 @@ require 'zlib'
 
 scores = {}
 
-File.open(File.join(__dir__, '../dictionaries/frequency/scores.txt')) do |io|
+File.open(File.join(__dir__, '../../dictionaries/frequency/scores.txt')) do |io|
   io.each_line do |line|
     line.chomp!
     (pos, word) = line.split(/\t/)
@@ -14,7 +14,7 @@ File.open(File.join(__dir__, '../dictionaries/frequency/scores.txt')) do |io|
 end
 
 counts = {}
-count_file = File.join(__dir__, 'count.txt.gz')
+count_file = File.join(__dir__, '../count.txt.gz')
 
 Zlib::GzipReader.open(count_file) do |io|
   io.each_line.with_index do |line, i|
@@ -24,7 +24,7 @@ Zlib::GzipReader.open(count_file) do |io|
   end
 end
 
-words = File.read(File.join(__dir__, '../dictionaries/scowl/en_US-large.txt'))
+words = File.read(File.join(__dir__, '../../dictionaries/scowl/en_US-large.txt'))
 words.gsub!(/^.*'s\n/, '')
 
 counts_len = counts.length
@@ -63,7 +63,7 @@ counts.each.with_index do |(pat, count), i|
   end
 
   out_file = pat + '.yml'
-  out_file = File.join(__dir__, 'data', out_file)
+  out_file = File.join(__dir__, '../data', out_file)
 
   hi_scored_words_count = hi_scored_words.length
   scored_words_count = scored_words.length

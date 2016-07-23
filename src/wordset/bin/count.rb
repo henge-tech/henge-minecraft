@@ -34,7 +34,7 @@ affix_chars = [
 
 patterns = {}
 
-words_file = File.join(__dir__, '../dictionaries/scowl/en_US-large.txt')
+words_file = File.join(__dir__, '../../dictionaries/scowl/en_US-large.txt')
 words = File.readlines(words_file)
 
 words.each.with_index do |word, i|

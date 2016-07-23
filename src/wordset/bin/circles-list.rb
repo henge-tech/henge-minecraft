@@ -19,9 +19,9 @@ open(File.join(__dir__, '../circles.md'), 'w') do |out|
   map.keys.sort.each do |key|
     next if key == 'total'
     if map[key] == '12'
-      out.puts "|#{key.ljust(16)}|#{map[key].ljust(16)}|"
+      out.puts "|#{key.ljust(16)}|#{"**#{map[key]}**".ljust(16)}|"
     else
-      out.puts "|#{key.ljust(16)}|#{"  #{map[key]} *".ljust(16)}|"
+      out.puts "|#{key.ljust(16)}|#{map[key].ljust(16)}|"
     end
   end
 end

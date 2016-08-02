@@ -69,6 +69,22 @@
 require 'nbtfile'
 require 'yaml'
 
+module NBTFile
+  class Emitter
+    attr_reader :gz
+  end
+
+  def self.write_with_mtime(io, name, body, mtime)
+    emit(io) do |emitter|
+      # Set timestamp to generate same gzip binary every time.
+      emitter.gz.mtime = mtime
+
+      writer = Writer.new(emitter)
+      writer.write_pair(name, body)
+    end
+  end
+end
+
 class StructureFile
   include NBTFile
   attr_accessor :author
@@ -144,7 +160,7 @@ class StructureFile
   end
 
   def write(io)
-    NBTFile::write(io, '', nbt(to_hash))
+    NBTFile::write_with_mtime(io, '', nbt(to_hash), 1_470_000_000)
   end
 end
 

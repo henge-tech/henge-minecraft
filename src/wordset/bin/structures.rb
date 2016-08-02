@@ -285,7 +285,11 @@ EOT
   end
 
   def self.build_structure(words)
-    @master[words.length].structure(words)
+    if @master[words.length]
+      @master[words.length].structure(words)
+    else
+      p words
+    end
   end
 end
 

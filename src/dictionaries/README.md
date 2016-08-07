@@ -24,7 +24,7 @@
 
 `web2` doesn't include some very basic words (`anytime`, `box`).
 
-```sh
+```console
 $ ruby ./bin/word-diff.rb basic/wiktionary-1000.txt dict/web2
 File1: 997
 File2: 235924
@@ -42,7 +42,7 @@ pleased
 
 Wordnet is also difficult to use as the source of word list. There may be a reason, but I don't know why lacking these words.
 
-```sh
+```console
 $ ruby ./bin/word-diff.rb basic/wiktionary-1000.txt wordnet/wordnet-1.txt
 File1: 997
 File2: 84169

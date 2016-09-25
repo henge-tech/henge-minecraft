@@ -1,0 +1,21 @@
+GIT
+  remote: git://github.com/koseki/nbtfile.git
+  revision: e2c17725b9c4d9eeb4e8c1317ce7a6503dda0fad
+  branch: merged
+  specs:
+    nbtfile (0.2.1)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    awesome_print (1.6.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  awesome_print
+  nbtfile!
+
+BUNDLED WITH
+   1.10.6

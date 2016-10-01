@@ -1,7 +1,4 @@
-require 'nbtfile'
-require 'yaml'
-
-require_relative 'nbtfile_patch'
+require 'zlib'
 
 #
 # http://minecraft.gamepedia.com/Region_file_format
@@ -59,7 +56,7 @@ class MCAFile
     end
   end
 
-  def chunk(index, uncompress = true)
+  def chunk(index, decompress = true)
     loc = @locations[index]
     return nil if loc[0] == 0
 
@@ -69,7 +66,7 @@ class MCAFile
       length = io.read(4).unpack('N')[0]
       ctype  = io.read(1).unpack('C')[0]
       chunk_src = io.read(length - 1)
-      chunk_src = Zlib::Inflate.inflate(chunk_src) if uncompress
+      chunk_src = Zlib::Inflate.inflate(chunk_src) if decompress
       [length, ctype, chunk_src]
     end
   end
@@ -214,5 +211,13 @@ class MCAFile
     io.seek(SECTOR_SIZE + idx * 4)
     io.write([timestamp].pack('N'))
     @timestamps[idx] = timestamp
+  end
+
+  def each_chunk
+    1024.times do |i|
+      loc = @locations[i]
+      next if loc[0] == 0
+      yield(i, chunk(i)[2])
+    end
   end
 end

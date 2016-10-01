@@ -1,5 +1,9 @@
+require 'yaml'
+require 'nbtfile'
+
 require_relative 'test_helper'
 require_relative '../lib/mcafile'
+require_relative '../lib/nbtfile_patch'
 
 class MCAFileTest < Test::Unit::TestCase
   def test_load_locations

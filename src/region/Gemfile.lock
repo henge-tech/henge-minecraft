@@ -9,6 +9,9 @@ GEM
   remote: https://rubygems.org/
   specs:
     awesome_print (1.6.1)
+    power_assert (0.3.1)
+    test-unit (3.2.1)
+      power_assert
 
 PLATFORMS
   ruby
@@ -16,6 +19,7 @@ PLATFORMS
 DEPENDENCIES
   awesome_print
   nbtfile!
+  test-unit
 
 BUNDLED WITH
    1.10.6

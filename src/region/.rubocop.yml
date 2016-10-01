@@ -1,0 +1,5 @@
+ClassLength:
+  Max: 500
+
+MethodLength:
+  Max: 50

@@ -1,4 +1,4 @@
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
-gem "awesome_print"
-gem "nbtfile", github: 'koseki/nbtfile', branch: 'merged'
+gem 'awesome_print'
+gem 'nbtfile', github: 'koseki/nbtfile', branch: 'merged'

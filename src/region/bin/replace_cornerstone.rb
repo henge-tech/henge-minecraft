@@ -14,12 +14,12 @@ require 'nbtfile'
 require_relative '../lib/nbtfile_patch'
 require_relative '../lib/mcafile'
 
-mcafile = MCAFile.new(ARGV[0])
-
 # mcafile > chunks(*1024 (32*32)) > Sections(*Y16) > Blocks (16*16*16)
 
 def update_block(idx, chunk, offset, blocks, data)
+  # the offset under the sign
   o = offset - 256
+
   b = blocks[o].unpack('C')[0]
   d = data[o / 2].unpack('C')[0]
 
@@ -35,43 +35,59 @@ def update_block(idx, chunk, offset, blocks, data)
     new_d = d & 0x0f # New data byte (set 0)
   end
 
-  if d2 != 0
-    # puts "#{idx} #{chunk['Level']['xPos'].value} #{chunk['Level']['zPos'].value} #{o} #{b} #{d} #{d2}"
-  end
+  puts "#{idx} #{chunk['Level']['xPos'].value} #{chunk['Level']['zPos'].value} #{o} #{b} #{d} #{d2}"
 
   blocks[o] = "\x30"
   data[o / 2] = [new_d].pack('C')
 end
 
-mcafile.each_chunk do |idx, chunk_src|
-  chunk = NBTFile.read(chunk_src)[1]
-  changed = false
-  chunk['Level']['Sections'].each.with_index do |section, section_y|
-    next if section_y == 0
-    bottom_section = chunk['Level']['Sections'].items[section_y - 1]
+def update_mca(path)
+  mcafile = MCAFile.new(path)
+  mcafile.each_chunk do |idx, chunk_src|
+    chunk = NBTFile.read(chunk_src)[1]
+    changed = false
+    chunk['Level']['Sections'].each.with_index do |section, section_y|
+      next if section_y == 0
+      bottom_section = chunk['Level']['Sections'].items[section_y - 1]
 
-    blocks  = section['Blocks'].value
-    data    = section['Data'].value
+      blocks  = section['Blocks'].value
+      data    = section['Data'].value
 
-    bblocks = bottom_section['Blocks'].value
-    bdata   = bottom_section['Data'].value
+      bblocks = bottom_section['Blocks'].value
+      bdata   = bottom_section['Data'].value
 
-    blocks.each_char.with_index do |char, offset|
-      next unless char == "\x3f"
-      # puts "chunk:#{idx}\tY:#{section['Y'].value}\tblock:#{offset}"
-      changed = true
-      if offset < 256
-        update_block(idx, chunk, offset, bblocks, bdata)
-      else
-        update_block(idx, chunk, offset, blocks, data)
+      blocks.each_char.with_index do |char, offset|
+        next unless char == "\x3f"
+        # puts "chunk:#{idx}\tY:#{section['Y'].value}\tblock:#{offset}"
+        changed = true
+        if offset < 256
+          update_block(idx, chunk, offset, bblocks, bdata)
+        else
+          update_block(idx, chunk, offset, blocks, data)
+        end
       end
     end
-  end
 
-  if changed
-    io = StringIO.new()
-    NBTFile.write(io, '', chunk)
-    io.seek(0)
-    mcafile.write_chunk(idx, io.read)
+    if changed
+      io = StringIO.new()
+      NBTFile.write(io, '', chunk)
+      io.seek(0)
+      mcafile.write_chunk(idx, io.read)
+    end
   end
 end
+
+def execute()
+  mcafile = ARGV[0]
+  if File.directory?(mcafile)
+    regiondir = mcafile
+    Dir.glob(File.join(regiondir, 'r.*.mca')) do |file|
+      puts file
+      update_mca(file)
+    end
+  else
+    update_mca(mcafile)
+  end
+end
+
+execute

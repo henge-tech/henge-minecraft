@@ -78,6 +78,29 @@ class MCAFile
     coords_to_mca(x, z, y)
   end
 
+  def self.halfbyte(data, offset, newvalue = nil)
+    byte = data[offset / 2].unpack('C')[0]
+
+    # http://minecraft.gamepedia.com/Chunk_format#Block_format
+    #
+    # Thus block[0] is byte[0] at 0x0F, block[1] is byte[0] at 0xF0,
+    # block[2] is byte[1] at 0x0F, block[3] is byte[1] at 0xF0, etc. ...
+    if offset % 2 == 0
+      current  = byte & 0x0f # This block data value (4bit)
+      new_byte = (byte & 0xf0) | newvalue unless newvalue.nil?
+    else
+      current  = byte >> 4   # This block data value (4bit)
+      new_byte = (byte & 0x0f) | (newvalue << 4) unless newvalue.nil?
+    end
+
+    if newvalue.nil?
+      current
+    else
+      data[offset / 2] = [new_byte].pack('C')
+      data
+    end
+  end
+
   def initialize(file)
     @file = file
     @locations = []

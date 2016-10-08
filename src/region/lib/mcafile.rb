@@ -3,6 +3,18 @@ require 'zlib'
 #
 # http://minecraft.gamepedia.com/Region_file_format
 #
+# MCAFile    = 1               Region
+# 1 Region   = x32 * z32       Chunks (= 1024 Chunks)
+# 1 Chunk    = Y0..15          Sections
+# 1 Section  = x16 * z16 * y16 Blocks (= 4096 Blocks)
+#
+#
+# 1 Sector   = 4096 bytes
+# MCAFile    = Locations + Timestamps + Chunks
+# Locations  = 1 Sector (4 bytes * 1024 Chunks)
+# Timestamps = 1 Sector (4 bytes * 1024 Chunks)
+# 1 Chunk    = N Sectors
+#
 class MCAFile
   SECTOR_BSIZE = 12
   SECTOR_SIZE = 4096
@@ -10,8 +22,61 @@ class MCAFile
   CTYPE_GZIP = 1
   CTYPE_ZLIB = 2
 
+  REGION_BWIDTH = 5
+  REGION_WIDTH = 32
+
+  CHUNK_BWIDTH = 4
+  CHUNK_WIDTH = 16
+
   attr_reader :locations
   attr_reader :timestamps
+
+  def self.coords_to_mca(x, z, y)
+    loc = {}
+    x = x.floor
+    z = z.floor
+    y = y.floor
+
+    loc[:x] = x
+    loc[:z] = z
+    loc[:y] = y
+
+    loc[:chunk_x]   = x >> CHUNK_BWIDTH
+    loc[:chunk_z]   = z >> CHUNK_BWIDTH
+    loc[:section_y] = y >> CHUNK_BWIDTH
+
+    loc[:region_x] = loc[:chunk_x] >> REGION_BWIDTH
+    loc[:region_z] = loc[:chunk_z] >> REGION_BWIDTH
+    loc[:mcafile] = "r.#{loc[:region_x]}.#{loc[:region_z]}.mca"
+
+    region_chunk_x = loc[:chunk_x] % REGION_WIDTH
+    region_chunk_z = loc[:chunk_z] % REGION_WIDTH
+    loc[:chunk_index] = (region_chunk_z << REGION_BWIDTH) + region_chunk_x
+
+    # Section: 16 * 16 * 16
+    loc[:section_local_x] = x % CHUNK_WIDTH
+    loc[:section_local_z] = z % CHUNK_WIDTH
+    loc[:section_local_y] = y % CHUNK_WIDTH
+
+    loc[:block_index] = (loc[:section_local_y] << CHUNK_BWIDTH << CHUNK_BWIDTH) +
+                        (loc[:section_local_z] << CHUNK_BWIDTH) +
+                         loc[:section_local_x]
+    loc
+  end
+
+  def self.block_to_mca(region_x, region_z, chunk_index, section_y, block_index)
+    x =  (region_x    << REGION_BWIDTH  << CHUNK_BWIDTH) +
+        ((chunk_index  % REGION_WIDTH)  << CHUNK_BWIDTH) +
+          block_index  % CHUNK_WIDTH
+
+    z =  (region_z    << REGION_BWIDTH  << CHUNK_BWIDTH) +
+        ((chunk_index >> REGION_BWIDTH) << CHUNK_BWIDTH) +
+         (block_index >> CHUNK_BWIDTH)  %  CHUNK_WIDTH
+
+    y = (section_y << CHUNK_BWIDTH) + (block_index >> CHUNK_BWIDTH >> CHUNK_BWIDTH)
+
+    coords_to_mca(x, z, y)
+  end
 
   def initialize(file)
     @file = file

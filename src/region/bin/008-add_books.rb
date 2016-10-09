@@ -138,11 +138,14 @@ def execute(regions_dir, circles_dir)
   end
 
   mca_circles.each do |mca_file, circles|
-    next if mca_file != 'r.-1.0.mca'
+    # next if mca_file != 'r.-1.0.mca'
     mcafile = MCAFile.new(File.join(regions_dir, mca_file))
 
     circles.each do |circle|
       entity = ItemFrameEntity.build(circle)
+
+      ap circle
+      ap entity
 
       loc = circle[:loc]
       chunk_src = mcafile.chunk(loc[:chunk_index])[2]

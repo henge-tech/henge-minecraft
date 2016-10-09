@@ -1,0 +1,80 @@
+$ bundle exec ruby ./bin/dump_entity.rb ./tmp/r.-1.0.mca 465 1
+
+{
+            "Motion" => #<NBTFile::Types::List:0x007f9f81239128 @type=NBTFile::Types::Double, @items=[#<NBTFile::Types::Double:0x007f9f812387f0 @value=0.0>, #<NBTFile::Types::Double:0x007f9f812385e8 @value=0.0>, #<NBTFile::Types::Double:0x007f9f812384d0 @value=0.0>]>,
+            "Facing" => #<NBTFile::Types::Byte:0x007f9f81238070 @value=0>,
+         "UUIDLeast" => #<NBTFile::Types::Long:0x007f9f8124b6c0 @value=-6301386032768327974>,
+      "ItemRotation" => #<NBTFile::Types::Byte:0x007f9f8124aa18 @value=0>,
+      "Invulnerable" => #<NBTFile::Types::Byte:0x007f9f8124a6a8 @value=0>,
+               "Air" => #<NBTFile::Types::Short:0x007f9f8124a270 @value=300>,
+          "OnGround" => #<NBTFile::Types::Byte:0x007f9f81249c58 @value=0>,
+         "Dimension" => #<NBTFile::Types::Int:0x007f9f812495c8 @value=0>,
+    "PortalCooldown" => #<NBTFile::Types::Int:0x007f9f81248d30 @value=0>,
+          "Rotation" => #<NBTFile::Types::List:0x007f9f812480d8 @type=NBTFile::Types::Float, @items=[#<NBTFile::Types::Float:0x007f9f8125b548 @value=0.0>, #<NBTFile::Types::Float:0x007f9f8125b3b8 @value=0.0>]>,
+      "FallDistance" => #<NBTFile::Types::Float:0x007f9f8125aff8 @value=0.0>,
+              "Item" => {
+            "id" => #<NBTFile::Types::String:0x007f9f8125a148 @value="minecraft:written_book">,
+         "Count" => #<NBTFile::Types::Byte:0x007f9f81259c20 @value=1>,
+           "tag" => {
+               "pages" => #<NBTFile::Types::List:0x007f9f8124fe50 @type=NBTFile::Types::String, @items=[#<NBTFile::Types::String:0x007f9f8124f888 @value="{\"text\":\"\\n\\n\\n\\n\\n     #45   _aze\\n\"}">, #<NBTFile::Types::String:0x007f9f8124f6a8 @value="{\"text\":\"\\n\\n\\n   ablaze\\n   blaze\\n   craze\"}">, #<NBTFile::Types::String:0x007f9f8124f478 @value="{\"text\":\"\\n\\n\\n   daze\\n   faze\\n   gaze\"}">, #<NBTFile::Types::String:0x007f9f8124f298 @value="{\"text\":\"\\n\\n\\n   glaze\\n   graze\\n   haze\"}">, #<NBTFile::Types::String:0x007f9f8124f090 @value="{\"text\":\"\\n\\n\\n   laze\\n   raze\\n   sleaze\"}">, #<NBTFile::Types::String:0x007f9f8124ee88 @value="{\"text\":\"\"}">, #<NBTFile::Types::String:0x007f9f8124ebe0 @value="{\"text\":\"\\n\\n\\n\\n\\n     -234 64 235\"}">]>,
+              "author" => #<NBTFile::Types::String:0x007f9f8124e4d8 @value="kkoseki">,
+               "title" => #<NBTFile::Types::String:0x007f9f8124dec0 @value="#45 _aze">,
+            "resolved" => #<NBTFile::Types::Byte:0x007f9f8124d858 @value=1>
+        },
+        "Damage" => #<NBTFile::Types::Short:0x007f9f8124cb60 @value=0>
+    },
+    "ItemDropChance" => #<NBTFile::Types::Float:0x007f9f8124c278 @value=1.0>,
+          "UUIDMost" => #<NBTFile::Types::Long:0x007f9f812636f8 @value=-3330767071719240896>,
+               "Pos" => #<NBTFile::Types::List:0x007f9f81262bb8 @type=NBTFile::Types::Double, @items=[#<NBTFile::Types::Double:0x007f9f812628e8 @value=-234.5>, #<NBTFile::Types::Double:0x007f9f81262078 @value=63.5>, #<NBTFile::Types::Double:0x007f9f81261e98 @value=236.03125>]>,
+              "Fire" => #<NBTFile::Types::Short:0x007f9f812619e8 @value=0>,
+             "TileY" => #<NBTFile::Types::Int:0x007f9f81261718 @value=63>,
+                "id" => #<NBTFile::Types::String:0x007f9f812613d0 @value="ItemFrame">,
+             "TileX" => #<NBTFile::Types::Int:0x007f9f81260fe8 @value=-235>,
+             "TileZ" => #<NBTFile::Types::Int:0x007f9f81260c00 @value=236>
+}
+
+----------------------------------------------------------------
+
+      - Motion:
+        - 0.0
+        - 0.0
+        - 0.0
+        Facing: 0
+        UUIDLeast: -6301386032768327974
+        ItemRotation: 0
+        Invulnerable: 0
+        Air: 300
+        OnGround: 0
+        Dimension: 0
+        PortalCooldown: 0
+        Rotation:
+        - 0.0
+        - 0.0
+        FallDistance: 0.0
+        Item:
+          id: minecraft:written_book
+          Count: 1
+          tag:
+            pages:
+            - '{"text":"\n\n\n\n\n     #45   _aze\n"}'
+            - '{"text":"\n\n\n   ablaze\n   blaze\n   craze"}'
+            - '{"text":"\n\n\n   daze\n   faze\n   gaze"}'
+            - '{"text":"\n\n\n   glaze\n   graze\n   haze"}'
+            - '{"text":"\n\n\n   laze\n   raze\n   sleaze"}'
+            - '{"text":""}'
+            - '{"text":"\n\n\n\n\n     -234 64 235"}'
+            author: kkoseki
+            title: '#45 _aze'
+            resolved: 1
+          Damage: 0
+        ItemDropChance: 1.0
+        UUIDMost: -3330767071719240896
+        Pos:
+        - -234.5
+        - 63.5
+        - 236.03125
+        Fire: 0
+        TileY: 63
+        id: ItemFrame
+        TileX: -235
+        TileZ: 236

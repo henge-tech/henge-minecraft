@@ -87,10 +87,13 @@ def execute(regions_dir)
       end
 
       height_map = chunk['Level']['HeightMap'].value()
-      h = height_map[loc[:block_index] % 256]
+      h = height_map[loc[:block_index] % 256] - 1
       if loc[:y] == h
         # Could be deeper..
-        height_map[loc[:block_index] % 256] = h - 1
+        height_map[loc[:block_index] % 256] = h
+        puts "Update height map (#{circle[:word]}): #{h}"
+      else
+        puts "Skip update height map (#{circle[:word]}): #{loc[:y]} #{h}"
       end
 
       # Remove plant above the hole (loc2, loc3)

@@ -96,12 +96,16 @@ def execute(regions_dir)
         puts "Skip update height map (#{circle[:word]}): #{loc[:y]} #{h}"
       end
 
-      # Remove plant above the hole (loc2, loc3)
+      # Update SkyLight, remove plant above the hole (loc2, loc3)
       loc2 = circle[:loc2]
-      section = chunk['Level']['Sections'].items[loc2[:section_y]]
+      section2 = chunk['Level']['Sections'].items[loc2[:section_y]]
 
-      blocks = section['Blocks'].value
-      data   = section['Data'].value
+      if MCAFile.halfbyte(section2['SkyLight'].value, loc2[:block_index]) == 15
+        MCAFile.halfbyte(section['SkyLight'].value, loc[:block_index], 15)
+      end
+
+      blocks = section2['Blocks'].value
+      data   = section2['Data'].value
       block = blocks[loc2[:block_index]].unpack('C')[0]
 
       # [tall grass, red flower, yellow flower, tall plant]
@@ -114,10 +118,10 @@ def execute(regions_dir)
         # Remove tall plant (Sunflower, Double tallgrass, etc.)
         if block == 175
           loc3 = circle[:loc3]
-          section = chunk['Level']['Sections'].items[loc3[:section_y]]
-          unless section.nil?
-            blocks = section['Blocks'].value
-            data   = section['Data'].value
+          section3 = chunk['Level']['Sections'].items[loc3[:section_y]]
+          unless section3.nil?
+            blocks = section3['Blocks'].value
+            data   = section3['Data'].value
 
             block = blocks[loc3[:block_index]].unpack('C')[0]
             if block == 175

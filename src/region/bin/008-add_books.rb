@@ -81,7 +81,7 @@ module ItemFrameEntity
   def self.build_book(circle)
     cp = Compound.new()
 
-    cp['id'] = String.new('written_book')
+    cp['id'] = String.new('minecraft:written_book')
     cp['Count'] = Byte.new(1)
 
     tag = Compound.new()

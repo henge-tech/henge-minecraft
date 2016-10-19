@@ -5,8 +5,8 @@ require 'nbtfile'
 require 'optparse'
 require 'stringio'
 
-require_relative '../lib/nbtfile_patch'
-require_relative '../lib/mcafile'
+require_relative '../../lib/nbtfile_patch'
+require_relative '../../lib/mcafile'
 
 STDOUT.sync = true
 

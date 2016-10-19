@@ -10,8 +10,8 @@ require 'zlib'
 require 'awesome_print'
 require 'nbtfile'
 
-require_relative '../lib/nbtfile_patch'
-require_relative '../lib/mcafile'
+require_relative '../../lib/nbtfile_patch'
+require_relative '../../lib/mcafile'
 
 mcafile = ARGV[0]
 chunk_index = ARGV[1].to_i

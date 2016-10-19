@@ -11,8 +11,8 @@ require 'stringio'
 require 'awesome_print'
 require 'nbtfile'
 
-require_relative '../lib/nbtfile_patch'
-require_relative '../lib/mcafile'
+require_relative '../../lib/nbtfile_patch'
+require_relative '../../lib/mcafile'
 
 # mcafile > chunks(*1024 (32*32)) > Sections(*Y16) > Blocks (16*16*16)
 

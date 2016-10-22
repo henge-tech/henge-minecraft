@@ -28,7 +28,7 @@
 #
 # - ''
 # - version: 1
-#   author: kkoseki
+#   author: ht
 #   size:
 #   - 1
 #   - 1
@@ -64,260 +64,32 @@
 #  - Name: minecraft:standing_sign
 #    Properties:
 #      rotation: '0'
+#  - Name: minecraft:mossy_cobblestone
 #
 
 require 'nbtfile'
 require 'yaml'
+require 'awesome_print'
 
-module NBTFile
-  class Emitter
-    attr_reader :gz
-  end
+require_relative '../../lib/nbtfile_patch'
+require_relative '../../lib/mcafile'
+require_relative '../../lib/item_frame_entity'
+require_relative '../../lib/mca_circle'
+require_relative '../../lib/circle'
+require_relative '../../lib/structure_file'
 
-  def self.write_with_mtime(io, name, body, mtime)
-    emit(io) do |emitter|
-      # Set timestamp to generate same gzip binary every time.
-      emitter.gz.mtime = mtime
+STDOUT.sync = true
 
-      writer = Writer.new(emitter)
-      writer.write_pair(name, body)
-    end
-  end
-end
+list_file = File.expand_path('../../../region/bin/005-sort_and_add_id.log', __FILE__)
+outdir = File.expand_path('../../../../structures/circles/', __FILE__)
 
-class StructureFile
-  include NBTFile
-  attr_accessor :author
+mca_circles = MCACircle.load(ARGV[0], list_file)
 
-  def initialize(size)
-    @version = 1
-    @size = size
-    @author = nil
-
-    @blocks = []
-    @palette = []
-  end
-
-  def nbt(obj)
-    if obj.instance_of? ::Hash
-      hash_to_compound(obj)
-    elsif obj.instance_of? ::Array
-      array_to_list(obj)
-    elsif obj.instance_of? ::Fixnum
-      Types::Int.new(obj)
-      # :
-    elsif obj.instance_of? ::String
-      Types::String.new(obj)
-    else
-      obj
-    end
-  end
-
-  def array_to_list(arr)
-    list = arr.map {|o| nbt(o) }
-    if list.empty?
-      Types::List.new(Types::Compound, []) # FIXME
-    else
-      Types::List.new(list[0].class, list)
-    end
-  end
-
-  def hash_to_compound(hash)
-    comp = {}
-    hash.each { |k, v| comp[k] = nbt(v) }
-    return Types::Compound.new(comp)
-  end
-
-  def add_palette(name, properties)
-    palette = {
-      'Name' => name,
-      'Properties' => properties
-    }
-    @palette << palette
-  end
-
-  def palette=(palette)
-    @palette = palette
-  end
-
-  def add_block(state, pos, nbt)
-    block = {
-      'state' => state,
-      'pos' => pos,
-      'nbt' => nbt
-    }
-    @blocks << block
-  end
-
-  def to_hash
-    {
-      'version' => @version,
-      'author' => @author,
-      'size' => @size,
-      'palette' => @palette,
-      'blocks' => @blocks,
-    }
-  end
-
-  def write(io)
-    NBTFile::write_with_mtime(io, '', nbt(to_hash), 1_470_000_000)
-  end
-end
-
-class Circle
-  CIRCLES = {
-    8 => {
-      'size' => [7, 1, 7],
-      'rotations' => [0, 2, 4, 6, 8, 10, 12, 14],
-      'states'    => [0, 1, 2, 3, 4,  5,  6,  7],
-      'pattern'   => <<'EOT',
-...A...
-.H...B.
-.......
-G.....C
-.......
-.F...D.
-...E...
-EOT
-    },
-
-    12 => {
-      'size' => [11, 1, 11],
-      'rotations' => [0, 1, 3, 4, 5, 7, 8, 9, 11, 12, 13, 15],
-      'states'    => [0, 1, 2, 3, 4, 5, 6, 7,  8,  9, 10, 11],
-      'pattern'   => <<'EOT',
-.....A.....
-...L...B...
-...........
-.K.......C.
-...........
-J.........D
-...........
-.I.......E.
-...........
-...H...F...
-.....G.....
-EOT
-    },
-
-    16 => {
-      'size' => [13, 1, 13],
-      'rotations' => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-      'states'    => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-      'pattern'   => <<'EOT',
-....P.A.B....
-.............
-..O.......C..
-.............
-N...........D
-.............
-M...........E
-.............
-L...........F
-.............
-..K.......G..
-.............
-....J.I.H....
-EOT
-    },
-
-    20 => {
-      'size' => [15, 1, 15],
-      'rotations' => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-      'states'    => [0, 1, 2, 2, 3, 4, 5, 6, 6, 7, 8, 9, 10, 10, 11, 12, 13, 14, 14, 15],
-      'pattern'   => <<'EOT',
-.....T.A.B.....
-...S.......C...
-...............
-.R...........D.
-...............
-Q.............E
-...............
-P.............F
-...............
-O.............G
-...............
-.N...........H.
-...............
-...M.......I...
-.....L.K.J.....
-EOT
-    }
-  }
-
-  def initialize(opts)
-    @size = opts['size']
-    @states = opts['states']
-    @palette = palette(opts['rotations'])
-    @positions = positions(opts['pattern'])
-  end
-
-  def palette(rotations)
-    palette = []
-    rotations.each do |rot|
-      palette << {
-        'Name' => 'minecraft:standing_sign',
-        'Properties' => { 'rotation' => rot.to_s }
-      }
-    end
-    palette
-  end
-
-  def positions(pattern)
-    pos = {}
-    pattern.split(/\n/).each.with_index do |line, y|
-      line.split(//).each.with_index do |c, x|
-        next if c == '.'
-        pos[c] = [x, 0, y]
-      end
-    end
-    pos.keys.sort.map { |c| pos[c] }
-  end
-
-  def structure(words)
-    nbt = StructureFile.new(@size)
-    nbt.palette = @palette
-    words.each.with_index do |word, idx|
-      nbt.add_block(@states[idx], @positions[idx], sign(word))
-    end
-    nbt
-  end
-
-  def sign(word)
-    word = word.gsub(/\\/, '\\').gsub(/\"/, '\"')
-    {
-      'id' => 'Sign',
-      'Text1' => '{"text":""}',
-      'Text2' => "{\"text\": \"#{word}\"}",
-      'Text3' => '{"text":""}',
-      'Text4' => '{"text":""}',
-    }
-  end
-
-  @master = {}
-
-  CIRCLES.each do |key, circle|
-    @master[key] = new(circle)
-  end
-
-  def self.build_structure(words)
-    if @master[words.length]
-      @master[words.length].structure(words)
-    else
-      p words
-    end
-  end
-end
-
-outdir = File.join(__dir__, '../../../structures/circles/')
-Dir.chdir(File.join(__dir__, '../circles')) do
-  Dir.glob('*.yml') do |file|
-    pattern = File.basename(file, '.*')
-
-    words = YAML.load(File.read(file))
-    structure = Circle::build_structure(words)
+mca_circles.each do |mca_file, circles|
+  circles.each do |circle|
+    structure = Circle.build_structure(circle[:words])
     structure.author = 'mindcraft'
-    open(File.join('../../../structures/circles/', "#{pattern}.nbt"), 'w') do |out|
+    open(File.join(outdir, "#{circle[:pattern]}.nbt"), 'w') do |out|
       structure.write(out)
     end
   end

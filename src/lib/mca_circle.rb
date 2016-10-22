@@ -19,5 +19,6 @@ class MCACircle
         mca_circles[loc[:mcafile]] << circle
       end
     end
+    mca_circles
   end
 end

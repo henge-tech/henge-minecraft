@@ -13,6 +13,7 @@ class StructureFile
 
     @blocks = []
     @palette = []
+    @entities = []
   end
 
   def nbt(obj)
@@ -59,23 +60,30 @@ class StructureFile
     @palette = palette
   end
 
-  def add_block(state, pos, nbt)
+  def add_block(state, pos, nbt = nil)
     block = {
       'state' => state,
       'pos' => pos,
-      'nbt' => nbt
     }
+    block['nbt'] = nbt if nbt
+
     @blocks << block
   end
 
+  def add_entity(entity)
+    @entities << entity
+  end
+
   def to_hash
-    {
+    result = {
       'version' => @version,
       'author' => @author,
       'size' => @size,
       'palette' => @palette,
       'blocks' => @blocks,
     }
+    result['entities'] = @entities unless @entities.empty?
+    result
   end
 
   def write(out)

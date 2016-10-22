@@ -35,9 +35,9 @@ module ItemFrameEntity
     cp['UUIDMost'] = Long.new(uuid[0])
 
     pos = List.new(Double)
-    pos << Double.new(circle[:loc][:x])
-    pos << Double.new(circle[:loc][:y])
-    pos << Double.new(circle[:loc][:z])
+    pos << Double.new(circle[:loc][:x] + 0.5)
+    pos << Double.new(circle[:loc][:y] + 0.5)
+    pos << Double.new(circle[:loc][:z] + 0.03125)
     cp['Pos'] = pos
     cp['Fire'] = Short.new(0)
     cp['TileY'] = Int.new(circle[:loc][:y])
@@ -90,6 +90,23 @@ module ItemFrameEntity
     cp['tag'] = tag
 
     cp['Damage'] = Short.new(0)
+    cp
+  end
+
+  def self.build_structure_file_entry(pos, circle)
+    block_pos = pos.dup
+    entity_pos = pos.dup
+    entity_pos[0] += 0.5
+    entity_pos[1] += 0.5
+    entity_pos[2] += 0.03125
+
+    entity_pos = List.new(Double, entity_pos.map {|v| Double.new(v) })
+    block_pos = List.new(Int, block_pos.map {|v| Int.new(v) })
+    cp = Compound.new()
+    cp['pos'] = entity_pos
+    cp['blockPos'] = block_pos
+    cp['nbt'] = build(circle)
+
     cp
   end
 end

@@ -87,8 +87,9 @@ mca_circles = MCACircle.load(ARGV[0], list_file)
 
 mca_circles.each do |mca_file, circles|
   circles.each do |circle|
-    structure = Circle.build_structure(circle[:words])
-    structure.author = 'mindcraft'
+    puts circle[:pattern]
+    structure = Circle.build_structure(circle)
+    structure.author = 'ht'
     open(File.join(outdir, "#{circle[:pattern]}.nbt"), 'w') do |out|
       structure.write(out)
     end

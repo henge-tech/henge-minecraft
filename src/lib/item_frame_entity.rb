@@ -1,3 +1,5 @@
+require 'securerandom'
+
 module ItemFrameEntity
   include NBTFile::Types;
 

@@ -5,7 +5,6 @@
 #
 
 require 'yaml'
-require 'securerandom'
 require 'stringio'
 require 'awesome_print'
 require 'nbtfile'
@@ -13,6 +12,7 @@ require 'nbtfile'
 require_relative '../../lib/nbtfile_patch'
 require_relative '../../lib/mcafile'
 require_relative '../../lib/item_frame_entity'
+require_relative '../../lib/mca_circle'
 
 STDOUT.sync = true
 
@@ -20,28 +20,8 @@ regions_dir = ARGV[0]
 circles_dir = ARGV[1]
 
 def execute(regions_dir, circles_dir)
-
   list_file = File.expand_path('../005-sort_and_add_id.log', __FILE__)
-
-  mca_circles = {}
-  open(list_file) do |f|
-    f.each_line do |line|
-      line.chomp!
-      data = line.split(/\t/)
-      circle = {}
-      circle[:id] = data[0]
-      xyz = data[1..3].map(&:to_i)
-      circle[:pattern] = data[4]
-
-      loc  = MCAFile.coords_to_mca(xyz[0], xyz[2] + 1, xyz[1] - 1)
-
-      circle[:loc] = loc
-      circle[:words] = YAML.load(File.read(File.join(circles_dir, circle[:pattern] + '.yml')))
-
-      mca_circles[loc[:mcafile]] ||= []
-      mca_circles[loc[:mcafile]] << circle
-    end
-  end
+  mca_circles = MCACircle.load(circles_dir, list_file)
 
   mca_circles.each do |mca_file, circles|
     # next if mca_file != 'r.-1.0.mca'
